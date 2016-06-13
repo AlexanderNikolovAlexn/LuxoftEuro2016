@@ -1,0 +1,17 @@
+CREATE TABLE `alex`.`euro2016` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(255) NULL,
+  `bio` LONGTEXT NULL,
+  `is_photo` INT(1) NULL,
+  `special_player` VARCHAR(4000) NULL,
+  `position` VARCHAR(255) NULL,
+  `player_number` INT(3) NULL,
+  `caps` INT(6) NULL,
+  `goals_scored` INT(6) NULL,
+  `club` VARCHAR(255) NULL,
+  `league` VARCHAR(255) NULL,
+  `birthdate` DATE NULL,
+  `match_rating1` DECIMAL(4,2) NULL,
+  `match_rating2` DECIMAL(4,2) NULL,
+  `match_rating3` DECIMAL(4,2) NULL,
+  PRIMARY KEY (`id`));

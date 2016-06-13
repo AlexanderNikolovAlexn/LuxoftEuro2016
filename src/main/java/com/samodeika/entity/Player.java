@@ -1,5 +1,6 @@
 package com.samodeika.entity;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -11,6 +12,7 @@ public class Player {
     private String bio;
     private boolean photo;
     private String specialPlayer;
+    private String position;
     private int number;
     private int caps;
     private int goalsScored;
@@ -24,11 +26,12 @@ public class Player {
     public Player() {
     }
 
-    public Player(String name, String bio, boolean photo, String specialPlayer, int number, int caps, int goalsScored, String club, String league, Date birthDate, double matchRating1, double matchRating2, double matchRating3) {
+    public Player(String name, String bio, boolean photo, String specialPlayer, String position, int number, int caps, int goalsScored, String club, String league, Date birthDate, double matchRating1, double matchRating2, double matchRating3) {
         this.name = name;
         this.bio = bio;
         this.photo = photo;
         this.specialPlayer = specialPlayer;
+        this.position = position;
         this.number = number;
         this.caps = caps;
         this.goalsScored = goalsScored;
@@ -70,6 +73,14 @@ public class Player {
 
     public void setSpecialPlayer(String specialPlayer) {
         this.specialPlayer = specialPlayer;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public int getNumber() {
@@ -151,16 +162,16 @@ public class Player {
                 ", bio='" + bio + '\'' +
                 ", photo=" + photo +
                 ", specialPlayer='" + specialPlayer + '\'' +
+                ", position='" + position + '\'' +
                 ", number=" + number +
                 ", caps=" + caps +
                 ", goalsScored=" + goalsScored +
                 ", club='" + club + '\'' +
                 ", league='" + league + '\'' +
-                ", birthDate=" + birthDate +
+                ", birthDate=" + new SimpleDateFormat("dd-MM-yyyy").format(birthDate) +
                 ", matchRating1=" + matchRating1 +
                 ", matchRating2=" + matchRating2 +
                 ", matchRating3=" + matchRating3 +
                 '}';
     }
-
 }

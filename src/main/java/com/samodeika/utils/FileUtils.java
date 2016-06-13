@@ -11,14 +11,16 @@ public class FileUtils {
         readFile(file);
     }
 
-    public static void readFile(File file) {
+    public static String readFile(File file) {
+        String result = null;
         try (FileInputStream in = new FileInputStream(file))
         {
-            String result = getFileContent(in);
+            result = getFileContent(in);
             //System.out.println(result);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     public static boolean isValidDirectory(File dir) {

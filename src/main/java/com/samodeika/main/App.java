@@ -1,5 +1,10 @@
 package com.samodeika.main;
 
+import com.samodeika.dao.PlayerDao;
+import com.samodeika.dao.PlayerDaoImpl;
+import com.samodeika.entity.Player;
+import com.samodeika.json.JsonProcessor;
+import com.samodeika.json.JsonProcessorImpl;
 import com.samodeika.utils.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -23,9 +28,26 @@ public class App {
             directory = "C:\\dev\\jsons";
         }
         final File folder = new File(directory);
-        final List<String> files;
+        List<String> files = null;
         if(FileUtils.isValidDirectory(folder)) {
             files = FileUtils.listFilesFromFolder(folder);
+        }
+
+        // define database dao
+        PlayerDao playerDao = new PlayerDaoImpl();
+        playerDao.truncateTable();
+
+        // define json parser
+        JsonProcessor jsonProcessor = new JsonProcessorImpl();
+        for (String filePath : files) {
+            File file = new File(filePath);
+            List<Player> players = jsonProcessor.processFile(FileUtils.readFile(file));
+
+            //save player
+            //playerDao.savePlayer(players.get(0));
+
+            //save all players
+            playerDao.savePlayers(players);
         }
     }
 

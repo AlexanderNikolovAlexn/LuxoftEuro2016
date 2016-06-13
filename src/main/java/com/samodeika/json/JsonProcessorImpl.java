@@ -19,7 +19,6 @@ public class JsonProcessorImpl implements JsonProcessor {
 
     @Override
     public List<Player> processFile(String fileContent) {
-        System.out.println("Read json files");
         List<Player> players = new ArrayList<>();
         if(fileContent == null || fileContent.isEmpty()) {
             // return empty List
@@ -30,7 +29,6 @@ public class JsonProcessorImpl implements JsonProcessor {
         Iterator<?> keys = jsonObject.keys();
         while(keys.hasNext()) {
             JSONObject json = jsonObject.getJSONObject((String) keys.next());
-            System.out.println(json.toString());
             JSONArray array = json.getJSONArray("Players");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
@@ -55,7 +53,7 @@ public class JsonProcessorImpl implements JsonProcessor {
                 Double rating3 = NumberUtils.parseDouble(obj.getString("rating_match3"));
                 Player p = new Player(name, bio, isPhoto, specialPlayer, position, number, caps, goals, club, league,
                         birthDate, rating1, rating2, rating3);
-                System.out.println(p);
+//                System.out.println(p);
                 players.add(p);
             }
         }

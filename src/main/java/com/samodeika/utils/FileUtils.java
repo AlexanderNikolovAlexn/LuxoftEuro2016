@@ -28,7 +28,6 @@ public class FileUtils {
     }
 
     public static List<String> listFilesFromFolder(File folder) {
-        System.out.println("List files:");
         List<String> files = new ArrayList<>();
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {

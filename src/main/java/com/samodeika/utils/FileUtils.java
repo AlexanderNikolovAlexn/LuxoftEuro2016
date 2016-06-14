@@ -3,6 +3,7 @@ package com.samodeika.utils;
 import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public class FileUtils {
         return result;
     }
 
-    public static List<String> returnValidFiles(List<String> files, String extension) {
-        List<String> resultSet = new ArrayList<>();
-        for (String file : files) {
-            String ext = FilenameUtils.getExtension(file);
+    public static List<File> returnValidFiles(List<File> files, String extension) {
+        List<File> resultSet = new ArrayList<>();
+        for (File file : files) {
+            String ext = FilenameUtils.getExtension(file.getAbsolutePath());
             if(ext.equalsIgnoreCase(extension)) {
                 resultSet.add(file);
             }
@@ -40,13 +41,13 @@ public class FileUtils {
         return dir.exists();
     }
 
-    public static List<String> listFilesFromFolder(File folder) {
-        List<String> files = new ArrayList<>();
+    public static List<File> listFilesFromFolder(File folder) {
+        List<File> files = new ArrayList<>();
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {
                 listFilesFromFolder(fileEntry);
             } else {
-                files.add(fileEntry.getAbsolutePath());
+                files.add(fileEntry);
             }
         }
         return files;

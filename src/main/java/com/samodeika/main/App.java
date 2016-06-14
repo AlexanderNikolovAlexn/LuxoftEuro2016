@@ -4,9 +4,11 @@ import com.samodeika.concurentreadingrunable.FileReaderRunable;
 import com.samodeika.dao.PlayerDao;
 import com.samodeika.dao.PlayerDaoImpl;
 import com.samodeika.entity.Player;
+import com.samodeika.filtering.CollectionFiltering;
 import com.samodeika.json.JsonProcessor;
 import com.samodeika.json.JsonProcessorImpl;
 import com.samodeika.concurentreadingcallable.FileReaderCallable;
+import com.samodeika.utils.DateUtils;
 import com.samodeika.utils.FileUtils;
 
 import java.io.*;
@@ -17,7 +19,8 @@ import java.util.*;
  */
 public class App {
 
-    private static final String jsonExtension = "json";
+    private static final String JSON_EXTENSION = "json";
+    private static final Date FILTER_DATE = DateUtils.getDateFromString("01-01-1992", "dd-MM-yyyy");
 
     public static void main(String[] args) {
         System.out.println("Run main!");
@@ -31,10 +34,10 @@ public class App {
         }
         long startTime = System.nanoTime();
         File folder = new File(directory);
-        List<String> files = null;
+        List<File> files = null;
         if(FileUtils.isValidDirectory(folder)) {
             files = FileUtils.listFilesFromFolder(folder);
-            files = FileUtils.returnValidFiles(files, jsonExtension);
+            files = FileUtils.returnValidFiles(files, JSON_EXTENSION);
             if(files == null || files.isEmpty() || files.size() <= 0) {
                 System.out.println("No valid files in specified directory " + directory);
                 return;
@@ -62,10 +65,11 @@ public class App {
 
             System.out.println("3)Applying filtiring and sorting!");
             //filter collection
-            //TODO: add filtering
+            players = CollectionFiltering.filterCollectionByDate(players, FILTER_DATE);
+            CollectionFiltering.sortCollectionByDate(players);
 
             long filtiringEndTime = System.nanoTime();
-            duration = (readingFilesEndTime - filtiringEndTime) / 1000000;
+            duration = (filtiringEndTime - readingFilesEndTime) / 1000000;
             System.out.println("Filtering and sorting time is " + duration + " miliseconds");
 
             System.out.println("4)Saving data into database!");
@@ -87,24 +91,23 @@ public class App {
         }
     }
 
-    private static List<Player> multiThreadingRunable(List<String> files, JsonProcessor jsonProcessor) {
+    private static List<Player> multiThreadingRunable(List<File> files, JsonProcessor jsonProcessor) {
         List<Player> players = new ArrayList<>();
         FileReaderRunable fileReaderRunable = new FileReaderRunable(files, jsonProcessor);
         players = fileReaderRunable.processFiles();
         return players;
     }
 
-    private static List<Player> multiThreadingCallable(List<String> files, JsonProcessor jsonProcessor) {
+    private static List<Player> multiThreadingCallable(List<File> files, JsonProcessor jsonProcessor) {
         List<Player> players = new ArrayList<>();
         FileReaderCallable fileReaderCallable = new FileReaderCallable(files, jsonProcessor);
         players = fileReaderCallable.processFiles();
         return players;
     }
 
-    private static List<Player> singleThreadedExecution(List<String> files, JsonProcessor jsonProcessor) {
+    private static List<Player> singleThreadedExecution(List<File> files, JsonProcessor jsonProcessor) {
         List<Player> players = new ArrayList<>();
-        for (String filePath : files) {
-            File file = new File(filePath);
+        for (File file : files) {
             List<Player> newPlayers = jsonProcessor.processFile(FileUtils.readFile(file));
             players.addAll(newPlayers);
         }

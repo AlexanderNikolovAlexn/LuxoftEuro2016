@@ -1,6 +1,8 @@
 package com.samodeika.utils;
 
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
@@ -13,6 +15,17 @@ public class DateUtils {
 
     public static java.sql.Date convertJavaDateToSqlDate(java.util.Date date) {
         return new java.sql.Date(date.getTime());
+    }
+
+    public static Date getDateFromString(String date, String mask) {
+        DateFormat formatter = new SimpleDateFormat(mask);
+        Date resultDate = null;
+        try {
+            resultDate = formatter.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return resultDate;
     }
 
     public static Date generateRandomDate() {

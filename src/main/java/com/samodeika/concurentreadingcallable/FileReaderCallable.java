@@ -18,11 +18,11 @@ public class FileReaderCallable {
 
     private final static int NUM_CPUS = 4;
 
-    private List<String> inputFiles;
+    private List<File> inputFiles;
     private JsonProcessor jsonProcessor;
     private List<String> resultData;
 
-    public FileReaderCallable(List<String> datafiles, JsonProcessor jsonProcessor) {
+    public FileReaderCallable(List<File> datafiles, JsonProcessor jsonProcessor) {
         this.inputFiles = datafiles;
         this.jsonProcessor = jsonProcessor;
         this.resultData = new ArrayList<>();
@@ -32,8 +32,8 @@ public class FileReaderCallable {
         ExecutorService executor = Executors.newFixedThreadPool(NUM_CPUS);
         List<Future> futures = new ArrayList<>();
         List<Player> resultSet = new ArrayList<>();
-        for (String file : inputFiles) {
-            Future f = executor.submit(new FileProcessorCallable(jsonProcessor, new File(file)));
+        for (File file : inputFiles) {
+            Future f = executor.submit(new FileProcessorCallable(jsonProcessor, file));
             futures.add(f);
         }
 

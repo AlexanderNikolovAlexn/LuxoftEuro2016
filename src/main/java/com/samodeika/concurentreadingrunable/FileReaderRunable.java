@@ -15,11 +15,11 @@ public class FileReaderRunable {
 
     private final static int NUM_CPUS = 4;
 
-    private List<String> inputFiles;
+    private List<File> inputFiles;
     private JsonProcessor jsonProcessor;
     private List<String> resultData;
 
-    public FileReaderRunable(List<String> datafiles, JsonProcessor jsonProcessor) {
+    public FileReaderRunable(List<File> datafiles, JsonProcessor jsonProcessor) {
         this.inputFiles = datafiles;
         this.jsonProcessor = jsonProcessor;
         this.resultData = new ArrayList<>();
@@ -29,8 +29,8 @@ public class FileReaderRunable {
         ExecutorService executor = Executors.newFixedThreadPool(NUM_CPUS);
         List<Player> resultSet = new ArrayList<>();
         List<FileProcessorRunable> tasks = new ArrayList<>();
-        for (String file : inputFiles) {
-            FileProcessorRunable fileProcessor = new FileProcessorRunable(jsonProcessor, new File(file));
+        for (File file : inputFiles) {
+            FileProcessorRunable fileProcessor = new FileProcessorRunable(jsonProcessor, file);
             tasks.add(fileProcessor);
             executor.submit(fileProcessor);
         }

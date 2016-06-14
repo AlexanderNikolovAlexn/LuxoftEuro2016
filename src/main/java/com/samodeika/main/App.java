@@ -4,7 +4,7 @@ import com.samodeika.concurentreadingrunable.FileReaderRunable;
 import com.samodeika.dao.PlayerDao;
 import com.samodeika.dao.PlayerDaoImpl;
 import com.samodeika.entity.Player;
-import com.samodeika.filtering.CollectionFiltering;
+import com.samodeika.filtering.CollectionFilteringAndSorting;
 import com.samodeika.json.JsonProcessor;
 import com.samodeika.json.JsonProcessorImpl;
 import com.samodeika.concurentreadingcallable.FileReaderCallable;
@@ -56,8 +56,8 @@ public class App {
             System.out.println("1-2)Reading and processing json files!");
             long readingFilesStartTime = System.nanoTime();
             //players = singleThreadedExecution(files, jsonProcessor);
-            //players = multiThreadingCallable(files, jsonProcessor);
-            players = multiThreadingRunable(files, jsonProcessor);
+            //players = multiThreadingRunable(files, jsonProcessor);
+            players = multiThreadingCallable(files, jsonProcessor);
 
             long readingFilesEndTime = System.nanoTime();
             duration = (readingFilesEndTime - startTime) / 1000000;
@@ -65,8 +65,10 @@ public class App {
 
             System.out.println("3)Applying filtiring and sorting!");
             //filter collection
-            players = CollectionFiltering.filterCollectionByDate(players, FILTER_DATE);
-            CollectionFiltering.sortCollectionByDate(players);
+            players = CollectionFilteringAndSorting.filterCollectionByDate(players, FILTER_DATE);
+            CollectionFilteringAndSorting.sortCollectionByDate(players);
+            //players = CollectionFilteringAndSorting.customFilterCollectionByDate(players, FILTER_DATE);
+            //CollectionFilteringAndSorting.customMergeSort(players);
 
             long filtiringEndTime = System.nanoTime();
             duration = (filtiringEndTime - readingFilesEndTime) / 1000000;

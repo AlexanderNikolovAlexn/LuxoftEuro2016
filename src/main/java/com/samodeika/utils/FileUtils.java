@@ -1,5 +1,7 @@
 package com.samodeika.utils;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,17 @@ public class FileUtils {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static List<String> returnValidFiles(List<String> files, String extension) {
+        List<String> resultSet = new ArrayList<>();
+        for (String file : files) {
+            String ext = FilenameUtils.getExtension(file);
+            if(ext.equalsIgnoreCase(extension)) {
+                resultSet.add(file);
+            }
+        }
+        return resultSet;
     }
 
     public static boolean isValidDirectory(File dir) {

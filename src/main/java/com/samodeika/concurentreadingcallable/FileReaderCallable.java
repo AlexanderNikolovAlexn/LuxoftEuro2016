@@ -1,12 +1,10 @@
-package com.samodeika.utils;
+package com.samodeika.concurentreadingcallable;
 
 import com.samodeika.entity.Player;
 import com.samodeika.json.JsonProcessor;
-import com.samodeika.json.JsonProcessorImpl;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +14,7 @@ import java.util.concurrent.Future;
 /**
  * Created by Alexander Nikolov on 13.6.2016 ?..
  */
-public class FileReaderConcurent {
+public class FileReaderCallable {
 
     private final static int NUM_CPUS = 4;
 
@@ -24,10 +22,10 @@ public class FileReaderConcurent {
     private JsonProcessor jsonProcessor;
     private List<String> resultData;
 
-    public FileReaderConcurent(List<String> datafiles, JsonProcessor jsonProcessor) {
+    public FileReaderCallable(List<String> datafiles, JsonProcessor jsonProcessor) {
         this.inputFiles = datafiles;
         this.jsonProcessor = jsonProcessor;
-        this.resultData = Collections.synchronizedList(new ArrayList<>());
+        this.resultData = new ArrayList<>();
     }
 
     public List<Player> processFiles() {
@@ -35,7 +33,7 @@ public class FileReaderConcurent {
         List<Future> futures = new ArrayList<>();
         List<Player> resultSet = new ArrayList<>();
         for (String file : inputFiles) {
-            Future f = executor.submit(new FileProcessor(jsonProcessor, new File(file)));
+            Future f = executor.submit(new FileProcessorCallable(jsonProcessor, new File(file)));
             futures.add(f);
         }
 
@@ -51,6 +49,8 @@ public class FileReaderConcurent {
         }
 
         executor.shutdown();
+
+        System.out.println("ResultSetCallable count is " + resultSet.size());
 
         return resultSet;
     }
